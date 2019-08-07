@@ -51,5 +51,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button updateButton = findViewById(R.id.update_data);
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put("price",10.99);
+                db.update("Book",values,"name = ?",new String[]{"The Da Vinci Code"});
+            }
+        });
+
     }
 }
