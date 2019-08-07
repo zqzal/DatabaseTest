@@ -4,13 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
     private MyDatabaseHeloer dbHelper;
 
     @Override
@@ -68,6 +70,32 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 db.delete("Book","pages > ?",new String[]{"500"});
+            }
+        });
+
+        Button queryButton = findViewById(R.id.query_data);
+        queryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                //查询Book表中所有的数据
+                Cursor cursor = db.query("Book",null
+                        ,null,null,null,null,null);
+                if (cursor.moveToFirst()){
+                    do {
+                        //遍历Cursor对象，取出数据并打印
+                        String name = cursor.getString(cursor.getColumnIndex("name"));
+                        String author = cursor.getString(cursor.getColumnIndex("author"));
+                        int pages = cursor.getInt(cursor.getColumnIndex("pages"));
+                        double price = cursor.getDouble(cursor.getColumnIndex("price"));
+                        Log.d(TAG, "Book name is " + name);
+                        Log.d(TAG, "Book author is " + author);
+                        Log.d(TAG, "Book pages is " + pages);
+                        Log.d(TAG, "Book price is " + price);
+
+                    }while (cursor.moveToNext());
+                }
+                cursor.close();
             }
         });
 
