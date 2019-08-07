@@ -14,6 +14,12 @@ public class MyDatabaseHeloer extends SQLiteOpenHelper {
             "pages integer, " +
             "name text)";
 
+    public static final String CREATE_CATEGORY = "create table Categor ("+
+            "id integer primary key autoincrement, " +
+            "category_name text, " +
+            "category_code integer)";
+
+
     private Context mContext;
     public MyDatabaseHeloer(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -24,13 +30,16 @@ public class MyDatabaseHeloer extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
         sqLiteDatabase.execSQL(CREATE_BOOK);
+        sqLiteDatabase.execSQL(CREATE_CATEGORY);
         Toast.makeText(mContext,"Create succeeded",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
-
+        sqLiteDatabase.execSQL("drop table if exists Book");
+        sqLiteDatabase.execSQL("drop table if exists Categor");
+        onCreate(sqLiteDatabase);
 
     }
 }
