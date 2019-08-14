@@ -15,7 +15,7 @@ public class DatabaseProvider extends ContentProvider {
     public static final int BOOK_ITEM = 1;
     public static final int CATEGORY_DIR = 2;
     public static final int CATEGORY_ITEM = 3;
-    public static final String AUTHORITY = "com.exapmle.databasetest.provider";
+    public static final String AUTHORITY = "com.example.databasetest.provider";
     private static UriMatcher uriMatcher;
     private MyDatabaseHeloer dbHeleper;
 
@@ -44,14 +44,14 @@ public class DatabaseProvider extends ContentProvider {
                 break;
             case BOOK_ITEM:
                 String bookId = uri.getPathSegments().get(1);
-                deletedRows = db.delete("Book","id = ?",new String[]{});
+                deletedRows = db.delete("Book","id = ?",new String[]{bookId});
                 break;
             case CATEGORY_DIR:
                 deletedRows = db.delete("Category",selection,selectionArgs);
                 break;
             case CATEGORY_ITEM:
                 String categoryId = uri.getPathSegments().get(1);
-                deletedRows = db.delete("Category","id = ?",new String[]{});
+                deletedRows = db.delete("Category","id = ?",new String[]{categoryId});
                 break;
 
         }
@@ -69,7 +69,7 @@ public class DatabaseProvider extends ContentProvider {
             case BOOK_ITEM:
                 return "vnd.android.cursor.item/vnd.com.example.databasetest.provider.book";
             case CATEGORY_DIR:
-                return "vnd.android.cursor.item/vnd.com.example.databasetest.provider.category";
+                return "vnd.android.cursor.dir/vnd.com.example.databasetest.provider.category";
             case CATEGORY_ITEM:
                 return "vnd.android.cursor.item/vnd.com.example.databasetest.provider.category";
         }
